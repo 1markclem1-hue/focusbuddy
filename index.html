@@ -7,16 +7,19 @@
   <style>
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --accent: #4f46e5;
-      --accent-soft: #e0e7ff;
-      --text: #1f2933;
-      --muted: #6b7280;
-      --danger: #dc2626;
-      --success: #16a34a;
-      --radius: 16px;
-      --shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --bg: #0f172a;
+      --bg-soft: #020617;
+      --card: #020617;
+      --card-soft: #020617;
+      --accent: #6366f1;
+      --accent-soft: #312e81;
+      --accent-bright: #a855f7;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --radius: 18px;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
     }
 
     * {
@@ -26,7 +29,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: var(--bg);
+      background: radial-gradient(circle at top, #1d2440 0, #020617 40%, #020617 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -38,6 +41,7 @@
       max-width: 1200px;
       width: 100%;
       padding: 1.5rem;
+      animation: fadeIn 0.6s ease-out;
     }
 
     header {
@@ -50,8 +54,20 @@
     }
 
     .app-title {
-      font-size: 1.6rem;
-      font-weight: 700;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .app-title span.logo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      box-shadow: 0 0 12px rgba(129, 140, 248, 0.9);
     }
 
     .app-subtitle {
@@ -63,11 +79,14 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: var(--accent-soft);
-      color: var(--accent);
-      padding: 0.4rem 0.75rem;
+      background: rgba(55, 65, 81, 0.5);
+      color: #e5e7eb;
+      padding: 0.45rem 0.85rem;
       border-radius: 999px;
       font-size: 0.85rem;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(14px);
     }
 
     .pill span.emoji {
@@ -87,14 +106,39 @@
     }
 
     .card {
-      background: var(--card);
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 55%);
       border-radius: var(--radius);
-      padding: 1rem 1.1rem;
+      padding: 1rem 1.15rem;
       box-shadow: var(--shadow);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.2s ease-out;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(129, 140, 248, 0.16), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.9);
+      border-color: rgba(129, 140, 248, 0.6);
+    }
+
+    .card:hover::before {
+      opacity: 1;
     }
 
     .card h2 {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       margin: 0 0 0.4rem;
       display: flex;
       align-items: center;
@@ -107,13 +151,13 @@
 
     .card p {
       margin: 0 0 0.5rem;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--muted);
     }
 
     .section-body {
       margin-top: 0.35rem;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     button {
@@ -122,46 +166,64 @@
       padding: 0.4rem 0.9rem;
       font-size: 0.9rem;
       cursor: pointer;
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
       color: #fff;
       display: inline-flex;
       align-items: center;
       gap: 0.3rem;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, background 0.15s ease-out, opacity 0.15s ease-out;
+      box-shadow: 0 10px 25px rgba(129, 140, 248, 0.5);
+      white-space: nowrap;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 35px rgba(129, 140, 248, 0.7);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 20px rgba(129, 140, 248, 0.5);
+      opacity: 0.9;
     }
 
     button.secondary {
-      background: #e5e7eb;
-      color: #111827;
+      background: rgba(31, 41, 55, 0.9);
+      color: #e5e7eb;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.8);
     }
 
     button.danger {
-      background: var(--danger);
-      color: #fff;
+      background: linear-gradient(135deg, #ef4444, #f97316);
+      box-shadow: 0 10px 25px rgba(248, 113, 113, 0.5);
     }
 
     button.small {
       padding: 0.25rem 0.7rem;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
     }
 
     .tag {
       display: inline-flex;
       align-items: center;
       padding: 0.15rem 0.7rem;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       border-radius: 999px;
-      background: #e5e7eb;
-      color: #374151;
+      background: rgba(55, 65, 81, 0.8);
+      color: #e5e7eb;
+      border: 1px solid rgba(75, 85, 99, 0.9);
     }
 
     .tag.school {
-      background: #dbeafe;
-      color: #1d4ed8;
+      background: rgba(37, 99, 235, 0.18);
+      color: #bfdbfe;
+      border-color: rgba(59, 130, 246, 0.6);
     }
 
     .tag.home {
-      background: #dcfce7;
-      color: #15803d;
+      background: rgba(22, 163, 74, 0.18);
+      color: #bbf7d0;
+      border-color: rgba(34, 197, 94, 0.6);
     }
 
     .checklist {
@@ -174,15 +236,18 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.35rem 0;
+      padding: 0.25rem 0;
     }
 
     .checklist input[type="checkbox"] {
       transform: scale(1.1);
+      cursor: pointer;
+      accent-color: var(--accent);
     }
 
     .checklist label {
       cursor: pointer;
+      transition: color 0.12s ease-out, text-decoration-color 0.12s ease-out;
     }
 
     .checklist label.done {
@@ -197,35 +262,59 @@
       flex-wrap: wrap;
     }
 
-    input[type="text"], textarea, select {
+    input[type="text"], select {
       font-family: inherit;
-      font-size: 0.9rem;
-      padding: 0.35rem 0.5rem;
+      font-size: 0.85rem;
+      padding: 0.32rem 0.6rem;
       border-radius: 999px;
-      border: 1px solid #d1d5db;
+      border: 1px solid rgba(75, 85, 99, 0.9);
       min-width: 0;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
     }
 
     textarea {
       width: 100%;
-      border-radius: 10px;
+      border-radius: 12px;
       min-height: 60px;
       resize: vertical;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      font-size: 0.88rem;
+      padding: 0.45rem 0.6rem;
+      font-family: inherit;
+    }
+
+    input[type="text"]::placeholder,
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.8);
     }
 
     input[type="text"]:focus,
     textarea:focus,
     select:focus {
-      outline: 2px solid var(--accent-soft);
-      border-color: var(--accent);
+      outline: 2px solid rgba(129, 140, 248, 0.7);
+      border-color: rgba(129, 140, 248, 0.9);
     }
 
     .task-list {
       list-style: none;
       padding: 0;
       margin: 0.25rem 0 0;
-      max-height: 200px;
+      max-height: 220px;
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.9) transparent;
+    }
+
+    .task-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .task-list::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.9);
+      border-radius: 999px;
     }
 
     .task-item {
@@ -234,7 +323,7 @@
       justify-content: space-between;
       gap: 0.4rem;
       padding: 0.3rem 0;
-      border-bottom: 1px solid #f3f4f6;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.8);
     }
 
     .task-main {
@@ -257,11 +346,61 @@
       color: var(--muted);
     }
 
+    .task-filters {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      border-radius: 999px;
+      padding: 0.16rem 0.7rem;
+      font-size: 0.75rem;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .filter-chip.active {
+      background: rgba(129, 140, 248, 0.25);
+      border-color: rgba(129, 140, 248, 0.9);
+      color: #e5e7eb;
+    }
+
     .timer-display {
-      font-size: 1.8rem;
-      font-weight: 700;
+      font-size: 2rem;
+      font-weight: 800;
       text-align: center;
-      margin: 0.3rem 0 0.4rem;
+      margin: 0.3rem 0 0.2rem;
+      letter-spacing: 0.06em;
+    }
+
+    .timer-mode {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .timer-bar-wrapper {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.9);
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .timer-bar {
+      height: 100%;
+      width: 100%;
+      transform-origin: left;
+      transform: scaleX(1);
+      background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+      transition: transform 0.2s linear;
     }
 
     .timer-controls {
@@ -278,8 +417,9 @@
       font-size: 0.8rem;
       padding: 0.2rem 0.55rem;
       border-radius: 999px;
-      background: #f3f4f6;
-      color: #4b5563;
+      background: rgba(31, 41, 55, 0.85);
+      color: #e5e7eb;
+      border: 1px solid rgba(55, 65, 81, 0.9);
     }
 
     .mood-row {
@@ -291,15 +431,17 @@
     .mood-btn {
       flex: 1;
       justify-content: center;
-      font-size: 1.2rem;
-      padding: 0.35rem 0;
-      background: #e5e7eb;
-      color: #111827;
+      font-size: 1.1rem;
+      padding: 0.32rem 0;
+      background: rgba(30, 64, 175, 0.4);
+      color: #e5e7eb;
+      border: 1px solid rgba(30, 64, 175, 0.7);
     }
 
     .mood-btn.active {
-      background: var(--accent);
-      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      border-color: rgba(129, 140, 248, 0.9);
+      box-shadow: 0 10px 25px rgba(129, 140, 248, 0.7);
     }
 
     .hint {
@@ -315,11 +457,22 @@
     }
 
     .future {
-      border-left: 3px dashed #e5e7eb;
+      border-left: 3px dashed rgba(55, 65, 81, 0.9);
       padding-left: 0.6rem;
       margin-top: 0.4rem;
       font-size: 0.8rem;
       color: var(--muted);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
@@ -327,12 +480,15 @@
   <div class="app">
     <header>
       <div>
-        <div class="app-title">FocusBuddy</div>
+        <div class="app-title">
+          <span class="logo-dot"></span>
+          <span>FocusBuddy</span>
+        </div>
         <div class="app-subtitle">Daily support for focus, planning, and self-regulation.</div>
       </div>
       <div class="pill">
         <span class="emoji">⚡️</span>
-        <span>For students with ADHD & learning differences</span>
+        <span>Built for ADHD & learning differences</span>
       </div>
     </header>
 
@@ -364,6 +520,14 @@
               <input type="text" id="task-time" placeholder="Est. min" style="max-width: 90px;" />
               <button id="add-task-btn" class="small">+ Add</button>
             </div>
+
+            <div class="task-filters">
+              <button class="filter-chip active" data-filter="all">All</button>
+              <button class="filter-chip" data-filter="school">School</button>
+              <button class="filter-chip" data-filter="home">Home</button>
+              <button class="filter-chip" data-filter="done">Done</button>
+            </div>
+
             <ul class="task-list" id="task-list"></ul>
             <div class="hint" id="task-hint"></div>
           </div>
@@ -371,14 +535,14 @@
 
         <!-- Reading & Math Helpers (future AI stubs) -->
         <section class="card">
-          <h2><span class="emoji">🧠</span> Study Helpers (Future AI Area)</h2>
+          <h2><span class="emoji">🧠</span> Study Helpers (Future AI)</h2>
           <p>Spaces for reading and math support. Right now, just a place to organize.</p>
           <div class="section-body">
             <strong>Reading Helper</strong>
-            <textarea id="reading-text" placeholder="Paste a paragraph here you’d like simplified in the future..."></textarea>
+            <textarea id="reading-text" placeholder="Paste a paragraph you’d like simplified in the future..."></textarea>
 
             <strong>Math Helper</strong>
-            <textarea id="math-text" placeholder="Type a math problem you’d like help breaking into steps..."></textarea>
+            <textarea id="math-text" placeholder="Type a math problem you’d like broken into steps..."></textarea>
 
             <div class="future">
               These areas mark where an AI-based reading simplifier and step-by-step math helper could plug in later.  
@@ -395,16 +559,20 @@
           <h2><span class="emoji">⏱️</span> Focus Timer</h2>
           <p>Pick a short focus burst and let the timer keep time for you.</p>
           <div class="section-body">
+            <div class="timer-mode" id="timer-mode">Mode: Focus (25 min)</div>
             <div class="timer-display" id="timer-display">25:00</div>
+            <div class="timer-bar-wrapper">
+              <div class="timer-bar" id="timer-bar"></div>
+            </div>
             <div class="timer-controls">
-              <button class="small secondary" data-min="15">15 min</button>
-              <button class="small secondary" data-min="25">25 min</button>
-              <button class="small secondary" data-min="5">5 min break</button>
+              <button class="small secondary" data-min="15" data-mode="Focus">15 min focus</button>
+              <button class="small secondary" data-min="25" data-mode="Focus">25 min focus</button>
+              <button class="small secondary" data-min="5" data-mode="Break">5 min break</button>
               <button id="start-timer-btn">▶ Start</button>
               <button id="pause-timer-btn" class="secondary">⏸ Pause</button>
               <button id="reset-timer-btn" class="danger small">Reset</button>
             </div>
-            <div class="hint">Suggestion: try 25 minutes focus + 5 minutes break.</div>
+            <div class="hint">Suggestion: 25 minutes focus → 5 minutes break. You can change these anytime.</div>
           </div>
         </section>
 
@@ -450,6 +618,31 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      // ---------- Local Storage Helpers ----------
+      const STORAGE_KEYS = {
+        tasks: "focusbuddy_tasks",
+        checklist: "focusbuddy_checklist",
+        mood: "focusbuddy_mood"
+      };
+
+      function save(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {
+          console.warn("LocalStorage save failed:", e);
+        }
+      }
+
+      function load(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return fallback;
+          return JSON.parse(raw);
+        } catch (e) {
+          return fallback;
+        }
+      }
+
       // ---------- Start My Day checklist ----------
       const morningChecklistData = [
         "I ate/drank something (or will soon).",
@@ -461,6 +654,7 @@
 
       const checklistEl = document.getElementById("morning-checklist");
       const checklistSummaryEl = document.getElementById("checklist-summary");
+      let checklistState = load(STORAGE_KEYS.checklist, {});
 
       function renderChecklist() {
         checklistEl.innerHTML = "";
@@ -470,13 +664,18 @@
           const input = document.createElement("input");
           input.type = "checkbox";
           input.id = "check-" + index;
+          input.checked = !!checklistState[index];
 
           const label = document.createElement("label");
           label.htmlFor = input.id;
           label.textContent = text;
+          if (input.checked) label.classList.add("done");
 
           input.addEventListener("change", () => {
+            checklistState[index] = input.checked;
+            if (!input.checked) delete checklistState[index];
             label.classList.toggle("done", input.checked);
+            save(STORAGE_KEYS.checklist, checklistState);
             updateChecklistSummary();
           });
 
@@ -488,10 +687,8 @@
       }
 
       function updateChecklistSummary() {
-        const checkboxes = checklistEl.querySelectorAll("input[type='checkbox']");
-        const total = checkboxes.length;
-        let done = 0;
-        checkboxes.forEach(cb => { if (cb.checked) done++; });
+        const total = morningChecklistData.length;
+        const done = Object.values(checklistState).filter(Boolean).length;
         checklistSummaryEl.textContent = `Morning: ${done}/${total} done`;
       }
 
@@ -505,14 +702,23 @@
       const taskListEl = document.getElementById("task-list");
       const taskHintEl = document.getElementById("task-hint");
       const tasksSummaryEl = document.getElementById("tasks-summary");
+      const filterChips = document.querySelectorAll(".filter-chip");
 
-      let tasks = [];
+      let tasks = load(STORAGE_KEYS.tasks, []);
+      let currentFilter = "all";
 
       function renderTasks() {
         taskListEl.innerHTML = "";
         let doneCount = 0;
 
-        tasks.forEach((task, index) => {
+        const visibleTasks = tasks.filter(task => {
+          if (currentFilter === "all") return true;
+          if (currentFilter === "done") return task.done;
+          return task.category === currentFilter;
+        });
+
+        visibleTasks.forEach((task, indexVisible) => {
+          const globalIndex = tasks.findIndex(t => t.id === task.id);
           const li = document.createElement("li");
           li.className = "task-item";
 
@@ -523,7 +729,8 @@
           cb.type = "checkbox";
           cb.checked = task.done;
           cb.addEventListener("change", () => {
-            task.done = cb.checked;
+            tasks[globalIndex].done = cb.checked;
+            save(STORAGE_KEYS.tasks, tasks);
             renderTasks();
           });
 
@@ -541,7 +748,6 @@
           const tag = document.createElement("span");
           tag.className = "tag " + task.category;
           tag.textContent = task.category === "school" ? "School" : "Home";
-
           meta.appendChild(tag);
 
           if (task.timeEstimate) {
@@ -555,7 +761,8 @@
           removeBtn.textContent = "✕";
           removeBtn.title = "Remove task";
           removeBtn.addEventListener("click", () => {
-            tasks.splice(index, 1);
+            tasks.splice(globalIndex, 1);
+            save(STORAGE_KEYS.tasks, tasks);
             renderTasks();
           });
 
@@ -570,6 +777,8 @@
         tasksSummaryEl.textContent = `Tasks: ${tasks.length} total • ${doneCount} done`;
         if (tasks.length === 0) {
           taskHintEl.textContent = "Tip: Start with just 1–3 important tasks. ADHD brains do better with short lists.";
+        } else if (tasks.length > 6) {
+          taskHintEl.textContent = "You’ve got a lot here. Maybe star 2–3 \"most important\" and focus on those first.";
         } else {
           taskHintEl.textContent = "";
         }
@@ -583,12 +792,14 @@
         const timeEstimate = taskTimeEl.value.trim();
 
         tasks.push({
+          id: Date.now() + Math.random().toString(16).slice(2),
           text,
           category,
           timeEstimate: timeEstimate || "",
           done: false
         });
 
+        save(STORAGE_KEYS.tasks, tasks);
         taskTextEl.value = "";
         taskTimeEl.value = "";
         renderTasks();
@@ -599,6 +810,15 @@
         if (e.key === "Enter") addTaskBtn.click();
       });
 
+      filterChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          filterChips.forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          currentFilter = chip.getAttribute("data-filter");
+          renderTasks();
+        });
+      });
+
       renderTasks();
 
       // ---------- Focus Timer ----------
@@ -607,18 +827,28 @@
       const startTimerBtn = document.getElementById("start-timer-btn");
       const pauseTimerBtn = document.getElementById("pause-timer-btn");
       const resetTimerBtn = document.getElementById("reset-timer-btn");
+      const timerModeEl = document.getElementById("timer-mode");
+      const timerBarEl = document.getElementById("timer-bar");
 
-      let timerSeconds = 25 * 60; // default 25 minutes
+      let timerSeconds = 25 * 60;
+      let timerTotalSeconds = 25 * 60;
       let timerInterval = null;
+      let timerMode = "Focus"; // "Focus" or "Break"
 
       function updateTimerDisplay() {
         const m = Math.floor(timerSeconds / 60);
         const s = timerSeconds % 60;
         timerDisplay.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+
+        const ratio = timerTotalSeconds > 0 ? timerSeconds / timerTotalSeconds : 0;
+        timerBarEl.style.transform = `scaleX(${ratio})`;
       }
 
-      function setTimerMinutes(min) {
+      function setTimerMinutes(min, modeLabel) {
         timerSeconds = min * 60;
+        timerTotalSeconds = min * 60;
+        timerMode = modeLabel || "Focus";
+        timerModeEl.textContent = `Mode: ${timerMode} (${min} min)`;
         updateTimerDisplay();
       }
 
@@ -631,7 +861,10 @@
           } else {
             clearInterval(timerInterval);
             timerInterval = null;
-            alert("Time's up! ✅ Nice work. Consider a short break.");
+            const msg = timerMode === "Focus"
+              ? "Focus block done! 🎉 Time for a short break."
+              : "Break finished! 🌟 Ready for another focus block?";
+            alert(msg);
           }
         }, 1000);
       }
@@ -645,14 +878,15 @@
 
       function resetTimer() {
         pauseTimer();
-        setTimerMinutes(25);
+        setTimerMinutes(25, "Focus");
       }
 
       timerButtons.forEach(btn => {
         btn.addEventListener("click", () => {
           const min = Number(btn.getAttribute("data-min"));
+          const mode = btn.getAttribute("data-mode") || "Focus";
           pauseTimer();
-          setTimerMinutes(min);
+          setTimerMinutes(min, mode);
         });
       });
 
@@ -660,7 +894,7 @@
       pauseTimerBtn.addEventListener("click", pauseTimer);
       resetTimerBtn.addEventListener("click", resetTimer);
 
-      updateTimerDisplay();
+      setTimerMinutes(25, "Focus");
 
       // ---------- Break Planner ----------
       const breakSuggestionEl = document.getElementById("break-suggestion");
@@ -671,7 +905,7 @@
         "🚶 Stand up and walk around your room or hallway for 2 minutes.",
         "💧 Drink a glass of water slowly.",
         "🧍‍♂️ Stretch: touch your toes, reach for the sky, shoulder rolls.",
-        "🎧 Listen to one favorite song while NOT on your phone.",
+        "🎧 Listen to one favorite song while NOT scrolling.",
         "👀 Look out a window and name 5 things you see.",
         "✍️ Doodle or scribble for 3 minutes.",
         "🧸 Hold a fidget or object and notice how it feels for 1 minute."
@@ -688,36 +922,51 @@
       const moodSummaryEl = document.getElementById("mood-summary");
       const moodBadgeEl = document.getElementById("mood-badge");
 
-      let currentMood = null;
+      let currentMoodData = load(STORAGE_KEYS.mood, { mood: null, notes: "" });
+
+      function applyMoodFromState() {
+        moodButtons.forEach(b => b.classList.remove("active"));
+        if (currentMoodData.mood) {
+          const btn = document.querySelector(`.mood-btn[data-mood="${currentMoodData.mood}"]`);
+          if (btn) btn.classList.add("active");
+        }
+        moodNotesEl.value = currentMoodData.notes || "";
+        updateMoodSummary();
+      }
 
       moodButtons.forEach(btn => {
         btn.addEventListener("click", () => {
           const mood = btn.getAttribute("data-mood");
-          currentMood = mood;
-          moodButtons.forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
-          updateMoodSummary();
+          currentMoodData.mood = mood;
+          save(STORAGE_KEYS.mood, currentMoodData);
+          applyMoodFromState();
         });
       });
 
-      moodNotesEl.addEventListener("input", updateMoodSummary);
+      moodNotesEl.addEventListener("input", () => {
+        currentMoodData.notes = moodNotesEl.value.trim();
+        save(STORAGE_KEYS.mood, currentMoodData);
+        updateMoodSummary();
+      });
 
       function updateMoodSummary() {
         let moodText = "not set";
-        if (currentMood === "good") moodText = "feeling good 🙂";
-        if (currentMood === "meh") moodText = "feeling meh 😐";
-        if (currentMood === "tough") moodText = "having a tough time 😞";
+        if (currentMoodData.mood === "good") moodText = "feeling good 🙂";
+        if (currentMoodData.mood === "meh") moodText = "feeling meh 😐";
+        if (currentMoodData.mood === "tough") moodText = "having a tough time 😞";
 
-        const notes = moodNotesEl.value.trim();
+        const notes = currentMoodData.notes;
         if (notes) {
           moodSummaryEl.textContent = `You are ${moodText}. You wrote: “${notes}”`;
         } else {
-          moodSummaryEl.textContent = currentMood
+          moodSummaryEl.textContent = currentMoodData.mood
             ? `You are ${moodText}.`
             : "Pick a mood above.";
         }
         moodBadgeEl.textContent = "Mood: " + moodText;
       }
+
+      applyMoodFromState();
     });
   </script>
 </body>
